@@ -95,32 +95,36 @@ public class CourseController {
 
     }
     // slide 4
-    @GetMapping("/descrizione")
-    public ResponseEntity<List<String>> returnDescrizione(){
+    @GetMapping("/descrizione/{id}")
+    public ResponseEntity<?> returnDescrizione(@PathVariable long id, @RequestBody Course course){
 
         List<Course> listaCourse = courseRepository.findAll();
-        List<String> listaDescrizione = null;
-        for (Course courseIter: listaCourse){
-            listaDescrizione.add(courseIter.getDescrizione());
+
+
+        for (Course courseIter1: listaCourse){
+            if(courseIter1.getId()==id)
+                return new ResponseEntity<>(course.getDescrizione(), HttpStatus.OK);
 
         }
-        return new ResponseEntity<>(listaDescrizione, HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
     // slide 4
-    @GetMapping("/nome")
-    public ResponseEntity<List<String>> returnNome(){
+    @GetMapping("/nome/{id}")
+    public ResponseEntity<?> returnNome(@PathVariable long id, @RequestBody Course course){
 
         List<Course> listaCourse = courseRepository.findAll();
-        List<String> listaNome = null;
+
 
         for (Course courseIter1: listaCourse){
-            listaNome.add(courseIter1.getNome());
+            if(courseIter1.getId()==id)
+                return new ResponseEntity<>(course.getNome(), HttpStatus.OK);
 
         }
 
-        return new ResponseEntity<>(listaNome, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
