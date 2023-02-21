@@ -30,34 +30,6 @@ public class CourseController {
     }
 
 
-    //Slide 5
-    @GetMapping("/endopoint_numeri")
-    public ResponseEntity<Integer> returnEndpointNumeri(){
-
-        List<Course> listaCourse = courseRepository.findAll();
-
-        return new ResponseEntity<>(listaCourse.size(), HttpStatus.OK);
-    }
-
-
-
-    //Slide 7
-    @GetMapping("/endopoint_descrizione")
-    public ResponseEntity<List<Course>> returnEndpointDescrizione(){
-
-
-        List<Course> course_list = courseRepository.findAll();
-        for (Course courseIter : course_list) {
-            if (courseIter.getNome().length() < 20) {
-                return new ResponseEntity<>(course_list, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-
-
-
 
     /*
     @GetMapping()
@@ -76,16 +48,7 @@ public class CourseController {
         return new ResponseEntity<>(mappa, HttpStatus.OK);
     }*/
 
-    //Esercizio slide 3
-    @PostMapping("/prefixcontrollo")
-    public ResponseEntity<?> createCoursePrefix(@RequestBody Course course) {
-        if(course.getNome().substring(0, 6).equals("corso_") && course.getNome().length() > 7){
-            Course course1 = courseRepository.save(course);
-            return new ResponseEntity<>(course1, HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>("Le condizioni non sono rispettate", HttpStatus.NO_CONTENT);
 
-    }
 
     @PostMapping()
     public ResponseEntity<?> createCourse(@RequestBody Course course) {
@@ -120,6 +83,88 @@ public class CourseController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    //Esercizio slide 3
+    @PostMapping("/prefixcontrollo")
+    public ResponseEntity<?> createCoursePrefix(@RequestBody Course course) {
+        if(course.getNome().substring(0, 6).equals("corso_") && course.getNome().length() > 7){
+            Course course1 = courseRepository.save(course);
+            return new ResponseEntity<>(course1, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>("Le condizioni non sono rispettate", HttpStatus.NO_CONTENT);
+
+    }
+    // slide 4
+    @GetMapping("/descrizione")
+    public ResponseEntity<List<String>> returnDescrizione(){
+
+        List<Course> listaCourse = courseRepository.findAll();
+        List<String> listaDescrizione = null;
+        for (Course courseIter: listaCourse){
+            listaDescrizione.add(courseIter.getDescrizione());
+
+        }
+        return new ResponseEntity<>(listaDescrizione, HttpStatus.OK);
+
+    }
+
+    // slide 4
+    @GetMapping("/nome")
+    public ResponseEntity<List<String>> returnNome(){
+
+        List<Course> listaCourse = courseRepository.findAll();
+        List<String> listaNome = null;
+
+        for (Course courseIter1: listaCourse){
+            listaNome.add(courseIter1.getNome());
+
+        }
+
+        return new ResponseEntity<>(listaNome, HttpStatus.OK);
+
+    }
+
+    //Slide 5
+    @GetMapping("/endopoint_numeri")
+    public ResponseEntity<Integer> returnNumeri(){
+
+        List<Course> listaCourse = courseRepository.findAll();
+
+        return new ResponseEntity<>(listaCourse.size(), HttpStatus.OK);
+    }
+
+    //slide 6
+    @GetMapping("/endopoint_numeri")
+    public ResponseEntity<Integer> returnNumeriPrefisso(){
+        List<Course> listaCourse = courseRepository.findAll();
+        int count=0;
+        for(Course courseIter: listaCourse){
+            if(courseIter.getNome().substring(0,6).equals("corso_")){
+                count++;
+            }
+        }
+
+
+
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+
+
+
+    //Slide 7
+    @GetMapping("/endopoint_descrizione")
+    public ResponseEntity<List<Course>> returnEndpointDescrizione(){
+
+
+        List<Course> courseList = courseRepository.findAll();
+        for (Course courseIter : courseList) {
+            if (courseIter.getNome().length() < 20) {
+                return new ResponseEntity<>(courseList, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 
 
 
